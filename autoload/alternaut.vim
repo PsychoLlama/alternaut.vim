@@ -22,6 +22,7 @@ endfunc
 
 func! alternaut#LocateTestFile(source_file_path) abort
   let l:file_path = fnamemodify(a:source_file_path, ':p')
+  return alternaut#search#FindMatchingTestFile(&filetype, l:file_path)
 endfunc
 
 func! alternaut#OpenTestFile(source_file_path) abort
