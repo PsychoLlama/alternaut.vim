@@ -1,15 +1,20 @@
 func! s:FindTestFile(directory, lang_definition, file_name) abort
   " Example: ['__tests__/', 'tests/']
   for l:convention in a:lang_definition.directory_naming_conventions
-    let l:dir = a:directory . '/' . l:convention
+    let l:test_file_directory = a:directory . '/' . l:convention
 
-    " Example: ['.test.ts', '.test.js']
-    for l:file_ext in a:lang_definition.extensions
-      let l:test_file = l:dir . '/' . a:file_name . l:file_ext
+    " Example: ['test_{name}.{ext}']
+    for l:pattern in a:lang_definition.file_naming_conventions
+      " Example: ['ts', 'js']
+      for l:file_ext in a:lang_definition.file_extensions
+        let l:ctx = { 'name': a:file_name, 'ext': l:file_ext }
+        let l:test_file_name = alternaut#pattern#Interpolate(l:pattern, l:ctx)
+        let l:result = findfile(l:test_file_name, l:test_file_directory . '/**')
 
-      if filereadable(l:test_file)
-        return l:test_file
-      endif
+        if l:result isnot# ''
+          return l:result
+        endif
+      endfor
     endfor
   endfor
 
