@@ -13,3 +13,11 @@ func! alternaut#utils#GetCurrentDir(file_or_directory) abort
 
   return l:dir
 endfunc
+
+func! alternaut#utils#GetLanguageConfig(filetype) abort
+  if !has_key(g:alternaut#private#languages, a:filetype)
+    throw "No language definition for file type '" . a:filetype . "'."
+  endif
+
+  return g:alternaut#private#languages[a:filetype]
+endfunc

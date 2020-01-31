@@ -45,11 +45,20 @@ func! alternaut#search#FindMatchingTestFile(filetype, source_file) abort
 
   let l:file_name = fnamemodify(a:source_file, ':t:r')
   let l:curdir = alternaut#utils#GetCurrentDir(a:source_file)
+  let l:definition = alternaut#utils#GetLanguageConfig(a:filetype)
 
-  if !has_key(g:alternaut#private#languages, a:filetype)
-    throw "No language definition for file type '" . a:filetype . "'."
-  endif
-
-  let l:definition = g:alternaut#private#languages[a:filetype]
   return s:SearchUpward(l:curdir, l:definition, l:file_name)
+endfunc
+
+func! alternaut#search#FindParentTestDirectory(file_path, lang_definition) abort
+  let l:curdir = alternaut#utils#GetCurrentDir(a:file_path)
+  let l:containing_directories = split(l:curdir, '/')
+
+  for l:test_dir in a:lang_definition.directory_naming_conventions
+    if index(l:containing_directories, l:test_dir) > -1
+      return l:test_dir
+    endif
+  endfor
+
+  return v:null
 endfunc

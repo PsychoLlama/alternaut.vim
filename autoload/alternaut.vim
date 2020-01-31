@@ -29,14 +29,16 @@ func! alternaut#LocateTestFile(source_file_path) abort
   return alternaut#search#FindMatchingTestFile(&filetype, l:file_path)
 endfunc
 
-func! alternaut#OpenTestFile(source_file_path) abort
-  " TODO
-endfunc
-
 func! alternaut#LocateSourceFile(test_file_path) abort
   " TODO
 endfunc
 
-func! alternaut#OpenSourceFile(test_file_path) abort
-  " TODO
+func! alternaut#IsTestFile(file_path) abort
+  let l:lang_definition = alternaut#utils#GetLanguageConfig(&filetype)
+
+  if alternaut#search#FindParentTestDirectory(a:file_path, l:lang_definition) isnot# v:null
+    return v:true
+  endif
+
+  return v:false
 endfunc
