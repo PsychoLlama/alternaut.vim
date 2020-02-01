@@ -62,3 +62,43 @@ func! alternaut#search#FindParentTestDirectory(file_path, lang_definition) abort
 
   return v:null
 endfunc
+
+func! alternaut#search#FindMatchingSourceFile(filetype, test_file) abort
+  if !filereadable(a:test_file)
+    throw "The test file doesn't exist (" . a:test_file . ').'
+  endif
+
+  let l:parent_directory = alternaut#utils#GetCurrentDir(a:test_file)
+  let l:file_name = fnamemodify(a:test_file, ':t')
+  let l:lang_definition = alternaut#utils#GetLanguageConfig(a:filetype)
+  for l:pattern in l:lang_definition.file_naming_conventions
+    let l:vars = alternaut#pattern#Parse(l:pattern, l:file_name)
+
+    if empty(l:vars)
+      continue
+    endif
+
+    let l:result = s:ScanParentDirectories(l:parent_directory, l:vars, l:lang_definition)
+    if l:result isnot# v:null
+      return l:result
+    endif
+  endfor
+
+  return v:null
+endfunc
+
+" Similar to s:SearchUpward(...). Instead of checking adjacent test
+" directories recursively, this function only checks parent directories
+" 1 level deep.
+func! s:ScanParentDirectories(parent_directory, vars, lang_definition) abort
+  for l:ext in a:lang_definition.file_extensions
+    let l:source_file_name = a:vars.name . '.' . l:ext
+    let l:result = findfile(l:source_file_name, a:parent_directory . ';')
+
+    if l:result isnot# ''
+      return l:result
+    endif
+  endfor
+
+  return v:null
+endfunc
