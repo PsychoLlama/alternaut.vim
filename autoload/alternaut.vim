@@ -43,3 +43,42 @@ func! alternaut#IsTestFile(file_path) abort
 
   return v:false
 endfunc
+
+func! alternaut#EditTestFile(...) abort
+  let l:source_file_path = get(a:000, 0, expand('%:p'))
+  let l:test_file_path = alternaut#LocateTestFile(l:source_file_path)
+
+  if l:test_file_path is# v:null
+    echohl Error
+    echon 'Error:'
+    echohl Clear
+    echon " Can't find the test file."
+    return
+  endif
+
+  execute 'edit ' . fnameescape(l:test_file_path)
+endfunc
+
+func! alternaut#EditSourceFile(...) abort
+  let l:test_file_path = get(a:000, 0, expand('%:p'))
+  let l:source_file_path = alternaut#LocateSourceFile(l:test_file_path)
+
+  if l:source_file_path is# v:null
+    echohl Error
+    echon 'Error:'
+    echohl Clear
+    echon " Can't find the source file."
+    return
+  endif
+
+  execute 'edit ' . fnameescape(l:source_file_path)
+endfunc
+
+func! alternaut#Toggle() abort
+  let l:file_path = expand('%:p')
+  if alternaut#IsTestFile(l:file_path)
+    call alternaut#EditSourceFile(l:file_path)
+  else
+    call alternaut#EditTestFile(l:file_path)
+  endif
+endfunc
