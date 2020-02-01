@@ -1,4 +1,5 @@
 let g:alternaut#private#languages = {}
+let g:alternaut#private#interceptors = {}
 
 func! alternaut#RegisterLanguage(filetype, config) abort
   if type(a:filetype) isnot# v:t_string
@@ -24,6 +25,21 @@ func! alternaut#RegisterLanguage(filetype, config) abort
   let g:alternaut#private#languages[a:filetype] = a:config
 endfunc
 
+func! alternaut#AddInterceptor(filetype, interceptor) abort
+  if type(a:filetype) isnot# v:t_string
+    throw 'Alternaut needs a filetype string as the first parameter.'
+  endif
+
+  if type(a:interceptor) isnot# v:t_func
+    throw 'Alternaut needs an interceptor function as the second parameter.'
+  endif
+
+  let l:interceptors = get(g:alternaut#private#interceptors, a:filetype, [])
+  call add(l:interceptors, a:interceptor)
+
+  let g:alternaut#private#interceptors[a:filetype] = l:interceptors
+endfunc
+
 func! alternaut#LocateTestFile(source_file_path) abort
   let l:file_path = fnamemodify(a:source_file_path, ':p')
   return alternaut#search#FindMatchingTestFile(&filetype, l:file_path)
@@ -35,7 +51,8 @@ func! alternaut#LocateSourceFile(test_file_path) abort
 endfunc
 
 func! alternaut#IsTestFile(file_path) abort
-  let l:lang_definition = alternaut#utils#GetLanguageConfig(&filetype)
+  let l:full_file_path = fnamemodify(a:file_path, ':p')
+  let l:lang_definition = alternaut#utils#GetLanguageConfig(&filetype, l:full_file_path)
 
   if alternaut#search#FindParentTestDirectory(a:file_path, l:lang_definition) isnot# v:null
     return v:true

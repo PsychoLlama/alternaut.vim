@@ -45,7 +45,7 @@ func! alternaut#search#FindMatchingTestFile(filetype, source_file) abort
 
   let l:file_name = fnamemodify(a:source_file, ':t:r')
   let l:curdir = alternaut#utils#GetCurrentDir(a:source_file)
-  let l:definition = alternaut#utils#GetLanguageConfig(a:filetype)
+  let l:definition = alternaut#utils#GetLanguageConfig(a:filetype, a:source_file)
 
   return s:SearchUpward(l:curdir, l:definition, l:file_name)
 endfunc
@@ -70,7 +70,7 @@ func! alternaut#search#FindMatchingSourceFile(filetype, test_file) abort
 
   let l:parent_directory = alternaut#utils#GetCurrentDir(a:test_file)
   let l:file_name = fnamemodify(a:test_file, ':t')
-  let l:lang_definition = alternaut#utils#GetLanguageConfig(a:filetype)
+  let l:lang_definition = alternaut#utils#GetLanguageConfig(a:filetype, a:test_file)
   for l:pattern in l:lang_definition.file_naming_conventions
     let l:vars = alternaut#pattern#Parse(l:pattern, l:file_name)
 
