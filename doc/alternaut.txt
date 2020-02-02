@@ -1,0 +1,19 @@
+*alternaut* jumps between source and test files
+
+Author:   Jesse Gibson <JesseTheGibson@gmail.com>
+Homepage: https://github.com/PsychoLlama/alternaut.vim
+License:  MIT
+
+==============================================================================
+API                                                              |alternaut-api|
+
+Alternaut can be used programmatically. The API is available under the
+alternaut# namespace, but it's unstable. Don't use it yet.
+
+==============================================================================
+Changelog                                                  |alternaut-changelog|
+
+0.1.0
+Initial release (unstable)
+
+vim: ft=help tw=78:
