@@ -1,0 +1,19 @@
+name: Continuous Integration
+
+on:
+  - push
+  - pull_request
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        use_neovim: [false, true]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: ${{ matrix.use_neovim }}
+      - name: run unit tests
+        run: ./bin/run-unit-tests
