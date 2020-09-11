@@ -13,7 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: rhysd/action-setup-vim@v1
+        name: install vim (neo=${{ matrix.use_neovim }})
         with:
           neovim: ${{ matrix.use_neovim }}
       - name: run unit tests
         run: ./bin/run-unit-tests
+      - uses: ludvighz/vint-action@v1
+        name: run linter
+        with:
+          path: autoload
+          args: '--color'
