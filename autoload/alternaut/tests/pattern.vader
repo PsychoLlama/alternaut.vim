@@ -1,23 +1,23 @@
 Execute (interpolate named variables into a string):
   let ctx = { 'ext': 'py', 'name': 'yolo' }
-  let result = alternaut#pattern#Interpolate('{name}.test.{ext}', ctx)
+  let result = alternaut#pattern#interpolate('{name}.test.{ext}', ctx)
   AssertEqual 'yolo.test.py', result
 
 Execute (extract variables from pattern using source string):
   let filename = 'widget.test.js'
   let pattern = '{name}.test.{ext}'
-  let result = alternaut#pattern#Parse(pattern, filename)
+  let result = alternaut#pattern#parse(pattern, filename)
   AssertEqual { 'name': 'widget', 'ext': 'js' }, result
 
 Execute (empty variable list on failed pattern parsing):
   let filename = 'non-conformist-file'
   let pattern = '{first}.something.{second}'
-  let result = alternaut#pattern#Parse(pattern, filename)
+  let result = alternaut#pattern#parse(pattern, filename)
   AssertEqual {}, result
 
 # This probably shouldn't be valid.
 Execute (gracefully handles ambiguous parsing):
   let filename = 'some-file.rs'
   let pattern = '{first}{second}'
-  let result = alternaut#pattern#Parse(pattern, filename)
+  let result = alternaut#pattern#parse(pattern, filename)
   AssertEqual { 'first': filename, 'second': '' }, result

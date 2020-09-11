@@ -1,7 +1,7 @@
 let s:Types = { 'Var': 'variable', 'Literal': 'literal' }
 
 " f('{var}.js', { 'var': 'yolo' }) = 'yolo.js'
-func! alternaut#pattern#Interpolate(pattern, context) abort
+func! alternaut#pattern#interpolate(pattern, context) abort
   let l:result = a:pattern
 
   for l:key in keys(a:context)
@@ -10,12 +10,12 @@ func! alternaut#pattern#Interpolate(pattern, context) abort
     let l:result = substitute(l:result, l:substitution_pattern, l:value, 'g')
   endfor
 
-  call s:AssertAllVarsInterpolated(l:result)
+  call s:assert_all_vars_interpolated(l:result)
 
   return l:result
 endfunc
 
-func! s:AssertAllVarsInterpolated(string) abort
+func! s:assert_all_vars_interpolated(string) abort
   let l:unknown_sub = matchstr(a:string, '\v\{.*\}')
   if strlen(l:unknown_sub)
     throw 'alternaut.vim: can''t interpolate unknown variable "' . l:unknown_sub . '"'
@@ -23,9 +23,9 @@ func! s:AssertAllVarsInterpolated(string) abort
 endfunc
 
 " f('file.test.js', '{name}.test.{ext}') = { 'name': 'file', 'ext': 'js' }
-func! alternaut#pattern#Parse(pattern, filename) abort
-  let l:tokens = s:TokenizeFilePattern(a:pattern)
-  let l:regexp = s:ConvertPatternToRegExp(l:tokens)
+func! alternaut#pattern#parse(pattern, filename) abort
+  let l:tokens = s:tokenize_file_pattern(a:pattern)
+  let l:regexp = s:convert_pattern_to_regexp(l:tokens)
   let l:result = {}
 
   let l:matches = matchlist(a:filename, l:regexp)[1:]
@@ -50,7 +50,7 @@ func! alternaut#pattern#Parse(pattern, filename) abort
 endfunc
 
 " f('{name}.test.{ext}') = '\C\V\^\(\.\*\).test.\(\.\*\)\$'
-func! s:ConvertPatternToRegExp(tokens) abort
+func! s:convert_pattern_to_regexp(tokens) abort
   let l:regexp = '\C\V\^'
 
   for l:token in a:tokens
@@ -65,7 +65,7 @@ func! s:ConvertPatternToRegExp(tokens) abort
 endfunc
 
 " f('{name}.test.{ext}') = [{ 'type': 'variable', 'value': 'name' }, ...]
-func! s:TokenizeFilePattern(pattern) abort
+func! s:tokenize_file_pattern(pattern) abort
   let l:ctx = { 'active': s:Types.Literal, 'buffer': '', 'result': [] }
 
   func! l:ctx.Flush() abort closure

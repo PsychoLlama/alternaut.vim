@@ -42,19 +42,19 @@ endfunc
 
 func! alternaut#LocateTestFile(source_file_path) abort
   let l:file_path = fnamemodify(a:source_file_path, ':p')
-  return alternaut#search#FindMatchingTestFile(&filetype, l:file_path)
+  return alternaut#search#find_matching_test_file(&filetype, l:file_path)
 endfunc
 
 func! alternaut#LocateSourceFile(test_file_path) abort
   let l:file_path = fnamemodify(a:test_file_path, ':p')
-  return alternaut#search#FindMatchingSourceFile(&filetype, l:file_path)
+  return alternaut#search#find_matching_source_file(&filetype, l:file_path)
 endfunc
 
 func! alternaut#IsTestFile(file_path) abort
   let l:full_file_path = fnamemodify(a:file_path, ':p')
-  let l:lang_definition = alternaut#utils#GetLanguageConfig(&filetype, l:full_file_path)
+  let l:lang_definition = alternaut#utils#get_language_config(&filetype, l:full_file_path)
 
-  if alternaut#search#FindParentTestDirectory(a:file_path, l:lang_definition) isnot# v:null
+  if alternaut#search#find_parent_test_directory(a:file_path, l:lang_definition) isnot# v:null
     return v:true
   endif
 

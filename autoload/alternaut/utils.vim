@@ -1,6 +1,6 @@
 " Return the current directory, or the containing directory
 " if the current buffer is a file.
-func! alternaut#utils#GetCurrentDir(file_or_directory) abort
+func! alternaut#utils#get_current_dir(file_or_directory) abort
   let l:dir = a:file_or_directory
 
   if l:dir is# v:null
@@ -14,7 +14,7 @@ func! alternaut#utils#GetCurrentDir(file_or_directory) abort
   return l:dir
 endfunc
 
-func! alternaut#utils#GetLanguageConfig(filetype, file_path) abort
+func! alternaut#utils#get_language_config(filetype, file_path) abort
   if !has_key(g:alternaut#private#languages, a:filetype)
     throw "No language definition for file type '" . a:filetype . "'."
   endif
