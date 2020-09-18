@@ -15,6 +15,10 @@ func! alternaut#utils#get_current_dir(file_or_directory) abort
 endfunc
 
 func! alternaut#utils#get_language_config(filetype, file_path) abort
+  if exists('g:alternaut#conventions')
+    return alternaut#config#load(a:filetype)
+  endif
+
   if !has_key(g:alternaut#private#languages, a:filetype)
     throw "No language definition for file type '" . a:filetype . "'."
   endif

@@ -54,6 +54,10 @@ func! alternaut#IsTestFile(file_path) abort
   let l:full_file_path = fnamemodify(a:file_path, ':p')
   let l:lang_definition = alternaut#utils#get_language_config(&filetype, l:full_file_path)
 
+  if l:lang_definition is# v:null
+    return v:false
+  endif
+
   if alternaut#search#find_parent_test_directory(a:file_path, l:lang_definition) isnot# v:null
     return v:true
   endif
