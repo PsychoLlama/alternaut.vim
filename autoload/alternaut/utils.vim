@@ -16,7 +16,7 @@ endfunc
 
 func! alternaut#utils#get_language_config(filetype, file_path) abort
   if exists('g:alternaut#conventions')
-    return alternaut#config#load(a:filetype)
+    return alternaut#config#load_conventions(a:filetype)
   endif
 
   if !has_key(g:alternaut#private#languages, a:filetype)

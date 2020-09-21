@@ -1,6 +1,6 @@
 let s:REQUIRED_KEYS = ['file_naming_conventions', 'directory_naming_conventions', 'file_extensions']
 
-func! alternaut#config#load(filetype) abort
+func! alternaut#config#load_conventions(filetype) abort
   let l:all_conventions = get(g:, 'alternaut#conventions', {})
   let l:ft_conventions = get(l:all_conventions, a:filetype, v:null)
 

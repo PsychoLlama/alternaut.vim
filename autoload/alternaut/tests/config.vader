@@ -6,27 +6,27 @@ Before:
   let conventions['file_extensions'] = []
 
 Execute (returns null if the file type has not been defined):
-  AssertEqual v:null, alternaut#config#load('ft')
+  AssertEqual v:null, alternaut#config#load_conventions('ft')
 
 Execute (returns the file config if defined):
   let alternaut#conventions['ft'] = conventions
 
-  AssertEqual conventions, alternaut#config#load('ft')
+  AssertEqual conventions, alternaut#config#load_conventions('ft')
 
 Execute (survives if no conventions are defined):
   unlet alternaut#conventions
 
-  AssertEqual v:null, alternaut#config#load('ft')
+  AssertEqual v:null, alternaut#config#load_conventions('ft')
 
 Execute (fails to load the config if missing a field):
   let alternaut#conventions['ft'] = copy(conventions)
   unlet alternaut#conventions['ft']['file_naming_conventions']
-  silent AssertEqual v:null, alternaut#config#load('ft')
+  silent AssertEqual v:null, alternaut#config#load_conventions('ft')
 
   let alternaut#conventions['ft'] = copy(conventions)
   unlet alternaut#conventions['ft']['directory_naming_conventions']
-  silent AssertEqual v:null, alternaut#config#load('ft')
+  silent AssertEqual v:null, alternaut#config#load_conventions('ft')
 
   let alternaut#conventions['ft'] = copy(conventions)
   unlet alternaut#conventions['ft']['file_extensions']
-  silent AssertEqual v:null, alternaut#config#load('ft')
+  silent AssertEqual v:null, alternaut#config#load_conventions('ft')
