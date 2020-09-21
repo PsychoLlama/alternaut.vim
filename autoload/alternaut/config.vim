@@ -1,5 +1,23 @@
 let s:REQUIRED_KEYS = ['file_naming_conventions', 'directory_naming_conventions', 'file_extensions']
 
+func! alternaut#config#load_interceptors(filetype) abort
+  let l:all_interceptors = get(g:, 'alternaut#interceptors', {})
+  let l:interceptors = get(l:all_interceptors, a:filetype, [])
+
+  for l:interceptor in l:interceptors
+    if type(l:interceptor) isnot# v:t_func
+      call alternaut#print#error('Error:')
+      call alternaut#print#(' alternaut interceptors must be functions.')
+
+      " TODO: Link to a help page.
+
+      return []
+    endif
+  endfor
+
+  return l:interceptors
+endfunc
+
 func! alternaut#config#load_conventions(filetype) abort
   let l:all_conventions = get(g:, 'alternaut#conventions', {})
   let l:ft_conventions = get(l:all_conventions, a:filetype, v:null)
