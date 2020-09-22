@@ -12,9 +12,10 @@ func! alternaut#config#load_interceptors(filetype) abort
   for l:interceptor in l:interceptors
     if type(l:interceptor) isnot# v:t_func
       call alternaut#print#error('Error:')
-      call alternaut#print#(' alternaut interceptors must be functions.')
-
-      " TODO: Link to a help page.
+      call alternaut#print#(" interceptors must be functions.\n")
+      call alternaut#print#('See ')
+      call alternaut#print#code(':help alternaut#interceptors')
+      call alternaut#print#(' for details.')
 
       return []
     endif
@@ -38,11 +39,12 @@ func! s:validate_conventions(conventions, filetype) abort
   for l:key in s:REQUIRED_KEYS
     if !has_key(a:conventions, l:key)
       call alternaut#print#error('Error:')
-      call alternaut#print#(' the alternaut conventions for ')
+      call alternaut#print#(' the conventions for ')
       call alternaut#print#code(a:filetype)
-      call alternaut#print#(' are invalid.')
-
-      " TODO: Link to a help page.
+      call alternaut#print#(" are invalid.\n")
+      call alternaut#print#('See ')
+      call alternaut#print#code(':help alternaut#conventions')
+      call alternaut#print#(' for details.')
 
       return v:null
     endif
