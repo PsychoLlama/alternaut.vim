@@ -30,11 +30,12 @@ you name your test files? That kind of thing.
 
 ```viml
 " A typical JavaScript setup.
-call alternaut#RegisterLanguage('javascript', {
-      \   'directory_naming_conventions': ['__tests__', 'tests'],
-      \   'file_naming_conventions': ['{name}.test.{ext}', '{name}.spec.{ext}'],
-      \   'file_extensions': ['js', 'jsx'],
-      \ })
+let alternaut#conventions = {}
+let alternaut#conventions['javascript'] = {
+\   'directory_naming_conventions': ['__tests__', 'tests'],
+\   'file_naming_conventions': ['{name}.test.{ext}', '{name}.spec.{ext}'],
+\   'file_extensions': ['js', 'jsx'],
+\ }
 ```
 
 Once that's registered, any time you open a `javascript` file, you can call
@@ -46,6 +47,12 @@ and it'll toggle between the corresponding test and source file. If you're
 feeling lazy, put it in a mapping:
 ```viml
 nnoremap <silent><leader>a <esc>:call alternaut#Toggle()<cr>
+```
+
+## [Documentation](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt)
+The way of our people is [help files](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt).
+```viml
+:help alternaut
 ```
 
 ## Issues
