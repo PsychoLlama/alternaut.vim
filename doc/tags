@@ -1,1 +1,9 @@
 alternaut	alternaut.txt	/*alternaut*
+alternaut#conventions	alternaut.txt	/*alternaut#conventions*
+alternaut#interceptors	alternaut.txt	/*alternaut#interceptors*
+alternaut-api	alternaut.txt	/*alternaut-api*
+alternaut-changelog	alternaut.txt	/*alternaut-changelog*
+alternaut-config	alternaut.txt	/*alternaut-config*
+alternaut-conventions	alternaut.txt	/*alternaut-conventions*
+alternaut-interceptors	alternaut.txt	/*alternaut-interceptors*
+alternaut-overview	alternaut.txt	/*alternaut-overview*

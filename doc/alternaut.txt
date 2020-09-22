@@ -4,16 +4,149 @@ Author:   Jesse Gibson <JesseTheGibson@gmail.com>
 Homepage: https://github.com/PsychoLlama/alternaut.vim
 License:  MIT
 
+
+  Press `gO` to show the table of contents.
+
+
 ==============================================================================
-API                                                              |alternaut-api|
+OVERVIEW                                                    *alternaut-overview*
+
+Alternaut is a minimal plugin that powers quick navigation between test files
+and source code. It works by assuming a consistent directory structure and
+naming pattern, which is configurable by file type.
+
+Get started by defining a convention: |alternaut-conventions|
+
+==============================================================================
+CONFIG                                                        *alternaut-config*
+
+------------------------------------------------------------------------------
+CONVENTIONS                        *alternaut#conventions* *alternaut-conventions*
+
+Alternaut doesn't work out of the box. You have to configure it by telling it
+where to find test files by describing a set of conventions. Those conventions
+answer questions like "what's the name of the test directory" or "how are
+tests named?", that kind of thing.
+
+Here's an example for Jest + TypeScript: the Jest framework encourages you to
+keep tests in the `__tests__/` folder right next to your source code, so your
+directory structure might look like this...
+>
+  src/
+    health-check/
+      __tests__/
+        auth-utils.test.ts
+        uptime-monitor.test.ts
+      auth-utils.ts
+      uptime-monitor.ts
+
+And this is how you'd write the alternaut convention:
+>
+  let alternaut#conventions = {}
+  let alternaut#conventions['typescript'] = {
+  \   'directory_naming_conventions': ['__tests__'],
+  \   'file_extensions': ['ts', 'tsx'],
+  \   'file_naming_conventions': ['{name}.test.{ext}'],
+  \ }
+
+That tells alternaut how to behave when you're editing `typescript` files.
+`'directory_naming_conventions'` tells it where to look for tests, which in
+our case is the `__tests__/` folder, and `'file_extensions'` indicates, well,
+the file extension. Some languages have more than one.
+
+Those two fields narrow it down enough for alternaut to figure out the
+directory and file extension. The final thing it needs is the file name, and
+we assume tests have the same file name as the source code (i.e.
+`auth-utils.ts` and `auth-utils.test.ts` share the name `'auth-utils'`).
+`'file_naming_conventions'` fills that gap.
+
+As you might expect, `{name}` and `{ext}` are interpolated with real values.
+`{name}` is the file's name minus the extension (`'uptime-monitor'`, for
+example) and `{ext}` is one of the values in your extensions list.
+
+Bringing it all together: if you're editing the `src/uptime-monitor.ts` file
+and you ask alternaut to open the test file, it would look for these paths and
+return the first match:
+- `src/health-check/__tests__/uptime-monitor.test.ts`
+- `src/health-check/__tests__/uptime-monitor.test.tsx`
+- `src/__tests__/uptime-monitor.test.ts`
+- `src/__tests__/uptime-monitor.test.tsx`
+
+It checks every permutation of the test directory and file extension until it
+finds a match.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Here's another example with python. Say you keep your test files in a `tests/`
+folder and you typically name them `test_<the-file-name>.py`, but sometimes
+leave off the `test_` prefix.
+>
+  src/
+    tests/
+      test_jitter_buffer.py
+    jitter_buffer.py
+
+And here's the convention:
+>
+  let alternaut#conventions = {}
+  let alternaut#conventions['python'] = {
+  \   'file_naming_conventions': ['test_{name}.{ext}', '{name}.{ext}'],
+  \   'directory_naming_conventions': ['tests'],
+  \   'file_extensions': ['py'],
+  \ }
+
+That tells alternaut to look for `tests/test_{name}.py` and `tests/{name}.py`.
+
+Hopefully you get the idea.
+
+------------------------------------------------------------------------------
+INTERCEPTORS                     *alternaut#interceptors* *alternaut-interceptors*
+
+Interceptors allow you to override the conventions on a per-file basis. This
+is an advanced use case, and you probably don't need it. It's primarily useful
+when there's an oddball project that doesn't follow your typical testing
+patterns forcing you to override the conventions for that project alone.
+
+Interceptors are registered through the `alternaut#interceptors` variable.
+It's a mapping between file types and a list of functions. Each function
+executes in a series. Realistically you'll never need more than one (or even
+one at all).
+
+The interceptor is just a function that accepts the file path and the current
+file conventions. Whatever you return becomes the new file conventions.
+>
+  func s:override_project_defaults(file_path, conventions) abort
+    let a:conventions.directory_naming_conventions = ['look-here-instead']
+    return a:conventions
+  endfunc
+
+Here's an example of how you'd apply the interceptor to all lua files:
+>
+  let alternaut#interceptors = {}
+  let alternaut#interceptors['lua'] = [function('s:override_project_defaults')]
+
+==============================================================================
+API                                                              *alternaut-api*
 
 Alternaut can be used programmatically. The API is available under the
 alternaut# namespace, but it's unstable. Don't use it yet.
 
 ==============================================================================
-Changelog                                                  |alternaut-changelog|
+CHANGELOG                                                  *alternaut-changelog*
 
-0.1.0
-Initial release (unstable)
+0.1.0~
+
+Initial release (unstable).
+
+0.2.0 - Sept 21, 2020~
+
+Added:
+- Declarative configs using |alternaut#conventions|. See issue #1 for
+  a description of the problem.
+- Similarly, declarative interceptors using |alternaut#interceptors|.
+
+Deprecated:
+- `alternaut#RegisterLanguage(...)` and `alternaut#AddInterceptor(...)` are no
+  longer supported. Use the declarative configs instead.
 
 vim: ft=help tw=78:

@@ -47,6 +47,10 @@ func! alternaut#search#find_matching_test_file(filetype, source_file) abort
   let l:curdir = alternaut#utils#get_current_dir(a:source_file)
   let l:definition = alternaut#utils#get_language_config(a:filetype, a:source_file)
 
+  if l:definition is# v:null
+    return v:null
+  endif
+
   return s:search_upward(l:curdir, l:definition, l:file_name)
 endfunc
 

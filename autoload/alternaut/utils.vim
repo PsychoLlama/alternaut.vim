@@ -15,13 +15,17 @@ func! alternaut#utils#get_current_dir(file_or_directory) abort
 endfunc
 
 func! alternaut#utils#get_language_config(filetype, file_path) abort
+  if exists('g:alternaut#conventions')
+    return alternaut#config#load_conventions(a:filetype)
+  endif
+
   if !has_key(g:alternaut#private#languages, a:filetype)
     throw "No language definition for file type '" . a:filetype . "'."
   endif
 
   let l:lang_definition = g:alternaut#private#languages[a:filetype]
 
-  for l:Interceptor in get(g:alternaut#private#interceptors, a:filetype, [])
+  for l:Interceptor in alternaut#config#load_interceptors(a:filetype)
     let l:definition_override = l:Interceptor(a:file_path, deepcopy(l:lang_definition))
 
     " It might return null.
