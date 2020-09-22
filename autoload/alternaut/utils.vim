@@ -25,7 +25,7 @@ func! alternaut#utils#get_language_config(filetype, file_path) abort
 
   let l:lang_definition = g:alternaut#private#languages[a:filetype]
 
-  for l:Interceptor in get(g:alternaut#private#interceptors, a:filetype, [])
+  for l:Interceptor in alternaut#config#load_interceptors(a:filetype)
     let l:definition_override = l:Interceptor(a:file_path, deepcopy(l:lang_definition))
 
     " It might return null.

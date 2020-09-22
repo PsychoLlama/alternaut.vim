@@ -1,6 +1,8 @@
 Before:
+  let alternaut#private#interceptors = {}
   let alternaut#conventions = {}
   let alternaut#interceptors = {}
+
   let conventions = {}
   let conventions['file_naming_conventions'] = []
   let conventions['directory_naming_conventions'] = []
@@ -42,3 +44,9 @@ Execute (returns an empty array if any interceptor is invalid):
   call add(alternaut#interceptors['ft'], 'invalid value')
 
   silent AssertEqual [], alternaut#config#load_interceptors('ft')
+
+Execute (returns the legacy interceptor config if the new form is omitted):
+  unlet alternaut#interceptors
+  call alternaut#AddInterceptor('ft', { path, def -> v:null })
+
+  AssertEqual 1, len(alternaut#config#load_interceptors('ft'))
