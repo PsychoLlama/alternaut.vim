@@ -38,16 +38,13 @@ let alternaut#conventions['javascript'] = {
 \ }
 ```
 
-Once that's registered, any time you open a `javascript` file, you can call
+Once that's registered, create a mapping:
 ```viml
-:call alternaut#Toggle()
+nmap <leader>a <Plug>(alternaut-toggle)
 ```
 
-and it'll toggle between the corresponding test and source file. If you're
-feeling lazy, put it in a mapping:
-```viml
-nnoremap <silent><leader>a <esc>:call alternaut#Toggle()<cr>
-```
+Any time you open a `javascript` file, press `<leader>a` and it'll toggle
+between the corresponding test and source file.
 
 ## [Documentation](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt)
 The way of our people is [help files](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt).
