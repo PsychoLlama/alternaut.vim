@@ -126,6 +126,19 @@ Here's an example of how you'd apply the interceptor to all lua files:
   let alternaut#interceptors['lua'] = [function('s:override_project_defaults')]
 
 ==============================================================================
+MAPPINGS                           *<Plug>(alternaut-toggle)* *alternaut-mappings*
+
+`<Plug>` mappings don't have any effect unless you tie them to a keybinding.
+Here's an example of what that looks like in a vimrc:
+>
+  " Bind `<leader>a` to the toggle command.
+  nmap <leader>a <Plug>(alternaut-toggle)
+<
+<Plug>(alternaut-toggle)  This cycles between tests and source code for your
+                          current file. You need this mapping for alternaut to
+                          work.
+
+==============================================================================
 API                                                              *alternaut-api*
 
 Alternaut can be used programmatically. The API is available under the
@@ -148,5 +161,10 @@ Added:
 Deprecated:
 - `alternaut#RegisterLanguage(...)` and `alternaut#AddInterceptor(...)` are no
   longer supported. Use the declarative configs instead.
+
+0.3.0 - Sept 22, 2020~
+
+Added:
+- More streamlined `<Plug>(alternaut-toggle)` mapping.
 
 vim: ft=help tw=78:
