@@ -1,45 +1,3 @@
-let g:alternaut#private#languages = {}
-let g:alternaut#private#interceptors = {}
-
-func! alternaut#register_language(filetype, config) abort
-  if type(a:filetype) isnot# v:t_string
-    throw 'Alternaut needs a filetype string as the first parameter.'
-  endif
-
-  if type(a:config) isnot# v:t_dict
-    throw 'Alternaut needs a config dictionary as the second parameter.'
-  endif
-
-  if type(get(a:config, 'file_naming_conventions', v:null)) isnot# v:t_list
-    throw 'Alternaut language config needs a "file_naming_conventions" array.'
-  endif
-
-  if type(get(a:config, 'file_extensions', v:null)) isnot# v:t_list
-    throw 'Alternaut language config needs an "file_extensions" array.'
-  endif
-
-  if type(get(a:config, 'directory_naming_conventions', v:null)) isnot# v:t_list
-    throw 'Alternaut language config needs a "directory_naming_conventions" array.'
-  endif
-
-  let g:alternaut#private#languages[a:filetype] = a:config
-endfunc
-
-func! alternaut#add_interceptor(filetype, interceptor) abort
-  if type(a:filetype) isnot# v:t_string
-    throw 'Alternaut needs a filetype string as the first parameter.'
-  endif
-
-  if type(a:interceptor) isnot# v:t_func
-    throw 'Alternaut needs an interceptor function as the second parameter.'
-  endif
-
-  let l:interceptors = get(g:alternaut#private#interceptors, a:filetype, [])
-  call add(l:interceptors, a:interceptor)
-
-  let g:alternaut#private#interceptors[a:filetype] = l:interceptors
-endfunc
-
 func! alternaut#locate_test_file(source_file_path) abort
   let l:file_path = fnamemodify(a:source_file_path, ':p')
   return alternaut#search#find_matching_test_file(&filetype, l:file_path)
@@ -52,7 +10,7 @@ endfunc
 
 func! alternaut#is_test_file(file_path) abort
   let l:full_file_path = fnamemodify(a:file_path, ':p')
-  let l:lang_definition = alternaut#utils#get_language_config(&filetype, l:full_file_path)
+  let l:lang_definition = alternaut#config#load_conventions(&filetype)
 
   if l:lang_definition is# v:null
     return v:false

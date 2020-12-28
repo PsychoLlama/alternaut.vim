@@ -167,4 +167,12 @@ Deprecated:
 Added:
 - More streamlined `<Plug>(alternaut-toggle)` mapping.
 
+0.4.0 - Dec 28, 2020~
+
+Removed:
+- `RegisterLanguage(...)` and `AddInterceptor(...)` (deprecated in v0.2.0).
+
+Changed:
+- (private) renamed API functions to snake_case.
+
 vim: ft=help tw=78:

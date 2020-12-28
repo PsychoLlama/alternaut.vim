@@ -21,7 +21,7 @@ src/
 
 and you're editing `src/foo.js`. You want to open the test file.
 
-That's where alternaut comes in. Call `alternaut#Toggle()` and you're in
+That's where alternaut comes in. Hit the keybinding and you're in
 `src/__tests__/foo.test.js`. Toggle again and you're right back in the other
 file.
 

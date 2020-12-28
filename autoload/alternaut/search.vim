@@ -45,7 +45,7 @@ func! alternaut#search#find_matching_test_file(filetype, source_file) abort
 
   let l:file_name = fnamemodify(a:source_file, ':t:r')
   let l:curdir = alternaut#utils#get_current_dir(a:source_file)
-  let l:definition = alternaut#utils#get_language_config(a:filetype, a:source_file)
+  let l:definition = alternaut#config#load_conventions(a:filetype)
 
   if l:definition is# v:null
     return v:null
@@ -74,7 +74,7 @@ func! alternaut#search#find_matching_source_file(filetype, test_file) abort
 
   let l:parent_directory = alternaut#utils#get_current_dir(a:test_file)
   let l:file_name = fnamemodify(a:test_file, ':t')
-  let l:lang_definition = alternaut#utils#get_language_config(a:filetype, a:test_file)
+  let l:lang_definition = alternaut#config#load_conventions(a:filetype)
   for l:pattern in l:lang_definition.file_naming_conventions
     let l:vars = alternaut#pattern#parse(l:pattern, l:file_name)
 

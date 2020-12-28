@@ -1,3 +1,4 @@
+<Plug>(alternaut-toggle)	alternaut.txt	/*<Plug>(alternaut-toggle)*
 alternaut	alternaut.txt	/*alternaut*
 alternaut#conventions	alternaut.txt	/*alternaut#conventions*
 alternaut#interceptors	alternaut.txt	/*alternaut#interceptors*
@@ -6,4 +7,5 @@ alternaut-changelog	alternaut.txt	/*alternaut-changelog*
 alternaut-config	alternaut.txt	/*alternaut-config*
 alternaut-conventions	alternaut.txt	/*alternaut-conventions*
 alternaut-interceptors	alternaut.txt	/*alternaut-interceptors*
+alternaut-mappings	alternaut.txt	/*alternaut-mappings*
 alternaut-overview	alternaut.txt	/*alternaut-overview*

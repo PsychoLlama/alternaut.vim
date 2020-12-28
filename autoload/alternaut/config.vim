@@ -1,11 +1,6 @@
 let s:REQUIRED_KEYS = ['file_naming_conventions', 'directory_naming_conventions', 'file_extensions']
 
 func! alternaut#config#load_interceptors(filetype) abort
-  " Support the legacy interceptor registry.
-  if !exists('alternaut#interceptors')
-    return get(g:alternaut#private#interceptors, a:filetype, [])
-  endif
-
   let l:all_interceptors = get(g:, 'alternaut#interceptors', {})
   let l:interceptors = get(l:all_interceptors, a:filetype, [])
 

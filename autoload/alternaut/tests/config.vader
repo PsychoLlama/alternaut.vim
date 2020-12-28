@@ -1,5 +1,4 @@
 Before:
-  let alternaut#private#interceptors = {}
   let alternaut#conventions = {}
   let alternaut#interceptors = {}
 
