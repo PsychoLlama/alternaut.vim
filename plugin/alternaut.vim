@@ -1,1 +1,1 @@
-nnoremap <silent> <Plug>(alternaut-toggle) :call alternaut#Toggle()<cr>
+nnoremap <silent> <Plug>(alternaut-toggle) :call alternaut#toggle()<cr>

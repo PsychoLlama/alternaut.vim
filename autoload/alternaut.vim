@@ -1,7 +1,7 @@
 let g:alternaut#private#languages = {}
 let g:alternaut#private#interceptors = {}
 
-func! alternaut#RegisterLanguage(filetype, config) abort
+func! alternaut#register_language(filetype, config) abort
   if type(a:filetype) isnot# v:t_string
     throw 'Alternaut needs a filetype string as the first parameter.'
   endif
@@ -25,7 +25,7 @@ func! alternaut#RegisterLanguage(filetype, config) abort
   let g:alternaut#private#languages[a:filetype] = a:config
 endfunc
 
-func! alternaut#AddInterceptor(filetype, interceptor) abort
+func! alternaut#add_interceptor(filetype, interceptor) abort
   if type(a:filetype) isnot# v:t_string
     throw 'Alternaut needs a filetype string as the first parameter.'
   endif
@@ -40,17 +40,17 @@ func! alternaut#AddInterceptor(filetype, interceptor) abort
   let g:alternaut#private#interceptors[a:filetype] = l:interceptors
 endfunc
 
-func! alternaut#LocateTestFile(source_file_path) abort
+func! alternaut#locate_test_file(source_file_path) abort
   let l:file_path = fnamemodify(a:source_file_path, ':p')
   return alternaut#search#find_matching_test_file(&filetype, l:file_path)
 endfunc
 
-func! alternaut#LocateSourceFile(test_file_path) abort
+func! alternaut#locate_source_file(test_file_path) abort
   let l:file_path = fnamemodify(a:test_file_path, ':p')
   return alternaut#search#find_matching_source_file(&filetype, l:file_path)
 endfunc
 
-func! alternaut#IsTestFile(file_path) abort
+func! alternaut#is_test_file(file_path) abort
   let l:full_file_path = fnamemodify(a:file_path, ':p')
   let l:lang_definition = alternaut#utils#get_language_config(&filetype, l:full_file_path)
 
@@ -65,9 +65,9 @@ func! alternaut#IsTestFile(file_path) abort
   return v:false
 endfunc
 
-func! alternaut#EditTestFile(...) abort
+func! alternaut#edit_test_file(...) abort
   let l:source_file_path = get(a:000, 0, expand('%:p'))
-  let l:test_file_path = alternaut#LocateTestFile(l:source_file_path)
+  let l:test_file_path = alternaut#locate_test_file(l:source_file_path)
 
   if l:test_file_path is# v:null
     echohl Error
@@ -80,9 +80,9 @@ func! alternaut#EditTestFile(...) abort
   execute 'edit ' . fnameescape(l:test_file_path)
 endfunc
 
-func! alternaut#EditSourceFile(...) abort
+func! alternaut#edit_source_file(...) abort
   let l:test_file_path = get(a:000, 0, expand('%:p'))
-  let l:source_file_path = alternaut#LocateSourceFile(l:test_file_path)
+  let l:source_file_path = alternaut#locate_source_file(l:test_file_path)
 
   if l:source_file_path is# v:null
     echohl Error
@@ -95,11 +95,11 @@ func! alternaut#EditSourceFile(...) abort
   execute 'edit ' . fnameescape(l:source_file_path)
 endfunc
 
-func! alternaut#Toggle() abort
+func! alternaut#toggle() abort
   let l:file_path = expand('%:p')
-  if alternaut#IsTestFile(l:file_path)
-    call alternaut#EditSourceFile(l:file_path)
+  if alternaut#is_test_file(l:file_path)
+    call alternaut#edit_source_file(l:file_path)
   else
-    call alternaut#EditTestFile(l:file_path)
+    call alternaut#edit_test_file(l:file_path)
   endif
 endfunc
