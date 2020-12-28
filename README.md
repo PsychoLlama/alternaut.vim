@@ -46,8 +46,8 @@ nmap <leader>a <Plug>(alternaut-toggle)
 Any time you open a `javascript` file, press `<leader>a` and it'll toggle
 between the corresponding test and source file.
 
-## [Documentation](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt)
-The way of our people is [help files](https://github.com/PsychoLlama/alternaut.vim/blob/master/doc/alternaut.txt).
+## [Documentation](https://github.com/PsychoLlama/alternaut.vim/blob/main/doc/alternaut.txt)
+The way of our people is [help files](https://github.com/PsychoLlama/alternaut.vim/blob/main/doc/alternaut.txt).
 ```viml
 :help alternaut
 ```
