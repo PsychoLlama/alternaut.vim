@@ -8,9 +8,6 @@
   <p>Jump between your test and source files.</p>
 </div>
 
-## Project Status
-:warning: Experimental
-
 ## Example
 Say you've got a project structure like this:
 ```
@@ -56,7 +53,3 @@ The way of our people is [help files](https://github.com/PsychoLlama/alternaut.v
 ```viml
 :help alternaut
 ```
-
-## Issues
-The plugin is pretty new. If you experience some rough edges, feel free to
-open an issue :thumbsup:
