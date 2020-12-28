@@ -1,0 +1,29 @@
+name: Test
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test (${{ matrix.editor }})
+    strategy:
+      matrix:
+        editor:
+          - vim
+          - neovim
+    steps:
+      - uses: actions/checkout@v2
+      - uses: rhysd/action-setup-vim@v1
+        name: Install ${{ matrix.editor }}
+        with:
+          neovim: ${{ matrix.editor == 'neovim' }}
+      - uses: PsychoLlama/vader-action@v1
+
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: ./
+          args: '--color'
