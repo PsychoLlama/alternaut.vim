@@ -1,10 +1,15 @@
-# Alternaut.vim
+<div align="center">
+  <h1>alternaut.vim</h1>
+
+  <a href="https://github.com/PsychoLlama/alternaut.vim/actions?query=workflow%3ATest">
+    <img src="https://github.com/PsychoLlama/alternaut.vim/workflows/Test/badge.svg" alt="Build Status" />
+  </a>
+
+  <p>Jump between your test and source files.</p>
+</div>
 
 ## Project Status
 :warning: Experimental
-
-## Mission
-Instantly jump between your test files and your source files.
 
 ## Example
 Say you've got a project structure like this:
