@@ -22,7 +22,7 @@ func! s:assert_all_vars_interpolated(string) abort
   endif
 endfunc
 
-" f('file.test.js', '{name}.test.{ext}') = { 'name': 'file', 'ext': 'js' }
+" f('{name}.test.{ext}', 'file.test.js') = { 'name': 'file', 'ext': 'js' }
 func! alternaut#pattern#parse(pattern, filename) abort
   let l:tokens = s:tokenize_file_pattern(a:pattern)
   let l:regexp = s:convert_pattern_to_regexp(l:tokens)
@@ -47,6 +47,23 @@ func! alternaut#pattern#parse(pattern, filename) abort
   endwhile
 
   return l:result
+endfunc
+
+" Is the test file named differently than the source file?
+func! alternaut#pattern#is_asymmetric(pattern) abort
+  let l:tokens = s:tokenize_file_pattern(a:pattern)
+  for l:token in l:tokens
+    if l:token.type isnot# s:Types.Literal
+      continue
+    endif
+
+    " If the pattern contains a literal string, we can assume it's asymmetric.
+    if l:token.value =~# '\v[^.]+'
+      return v:true
+    endif
+  endfor
+
+  return v:false
 endfunc
 
 " f('{name}.test.{ext}') = '\C\V\^\(\.\*\).test.\(\.\*\)\$'

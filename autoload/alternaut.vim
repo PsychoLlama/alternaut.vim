@@ -16,6 +16,18 @@ func! alternaut#is_test_file(file_path) abort
     return v:false
   endif
 
+  for l:pattern in l:lang_definition.file_naming_conventions
+    " Ignore cases where tests are named the same thing as source files.
+    if !alternaut#pattern#is_asymmetric(l:pattern)
+      continue
+    endif
+
+    " If the file name can be parsed as a test file, assume it is.
+    if !empty(alternaut#pattern#parse(l:pattern, a:file_path))
+      return v:true
+    endif
+  endfor
+
   if alternaut#search#find_parent_test_directory(a:file_path, l:lang_definition) isnot# v:null
     return v:true
   endif

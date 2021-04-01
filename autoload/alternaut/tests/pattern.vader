@@ -21,3 +21,9 @@ Execute (gracefully handles ambiguous parsing):
   let pattern = '{first}{second}'
   let result = alternaut#pattern#parse(pattern, filename)
   AssertEqual { 'first': filename, 'second': '' }, result
+
+# Answers the question: do test files have the same name?
+Execute (detect asymmetric file names):
+  AssertEqual v:false, alternaut#pattern#is_asymmetric('{name}.{ext}')
+  AssertEqual v:true, alternaut#pattern#is_asymmetric('{name}.test.{ext}')
+  AssertEqual v:true, alternaut#pattern#is_asymmetric('test_{name}.{ext}')
