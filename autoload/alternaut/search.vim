@@ -1,6 +1,14 @@
-func! s:find_test_file(directory, lang_definition, file_name) abort
+func! s:find_test_file(directory, starting_directory, lang_definition, file_name) abort
   " Example: ['__tests__/', 'tests/']
   for l:convention in a:lang_definition.directory_naming_conventions
+    let l:is_local_search = l:convention is# '.'
+
+    if l:is_local_search && a:directory isnot# a:starting_directory
+      " The '.' directory is treated special by alternaut. It only searches in
+      " the current directory, and never scans upwards.
+      return v:null
+    endif
+
     let l:test_file_directory = a:directory . '/' . l:convention
 
     " Example: ['test_{name}.{ext}']
@@ -9,7 +17,10 @@ func! s:find_test_file(directory, lang_definition, file_name) abort
       for l:file_ext in a:lang_definition.file_extensions
         let l:ctx = { 'name': a:file_name, 'ext': l:file_ext }
         let l:test_file_name = alternaut#pattern#interpolate(l:pattern, l:ctx)
-        let l:result = findfile(l:test_file_name, l:test_file_directory . '/**')
+
+        " Only search one layer deep if tests are expected in the cwd.
+        let l:glob = l:is_local_search ? '' : '/**'
+        let l:result = findfile(l:test_file_name, l:test_file_directory . l:glob)
 
         if l:result isnot# ''
           return l:result
@@ -26,7 +37,7 @@ func! s:search_upward(starting_directory, definition, file_name) abort
   let l:current_dir = a:starting_directory
 
   while l:current_dir isnot# '/'
-    let l:result = s:find_test_file(l:current_dir, a:definition, a:file_name)
+    let l:result = s:find_test_file(l:current_dir, a:starting_directory, a:definition, a:file_name)
 
     if l:result isnot# v:null
       return l:result
