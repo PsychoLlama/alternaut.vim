@@ -175,4 +175,12 @@ Removed:
 Changed:
 - (private) renamed API functions to snake_case.
 
+0.5.0 - Apr 1, 2021~
+
+Added:
+- Support for tests and source files colocated in the same directory.
+
+Fixed:
+- Massive performance problems when using `'.'` as a directory convention.
+
 vim: ft=help tw=78:
